@@ -1,0 +1,31 @@
+# syntax: None,
+column_width = 80
+line_endings = "Unix"
+indent_type = "Spaces"
+indent_width = 2
+
+# 使用单引号还是双引号: "AutoPreferDouble", "AutoPreferSingle", "AlwaysDouble", "AlwaysSingle"
+quote_style = "AutoPreferDouble"
+
+# 控制函数调用括号的风格（Lua 允许省略括号）
+# "Always" → 总是保留括号 print("hi")
+# "None" → 允许省略括号 print "hi"
+# "Input" → 按输入代码保留/移除
+call_parentheses = "Input"
+
+# 控制 简单语句是否压缩成一行
+# "Always" → 能合并就合并
+# "Never" → 每条语句单独一行
+# "FunctionOnly" → 只在 local f = function() ... end 里合并
+collapse_simple_statement = "Always"
+
+# 是否保留代码块中的空行
+# "Never" → 保留，你写的空行 StyLua 不会删
+# "Preserve" → StyLua 会删除多余空行，使代码更紧凑
+block_newline_gaps = "Preserve"
+
+# 函数名后是否加空格。
+# "Always" → function foo ()
+# "Never" → function foo()
+# "Input" → 保持输入时的风格
+space_after_function_names = "Never"
