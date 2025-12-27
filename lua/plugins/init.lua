@@ -6,7 +6,18 @@ return {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    config = function() vim.cmd [[colorscheme gruvbox-material]] end,
+    -- config = function() vim.cmd [[colorscheme gruvbox-material]] end,
+  },
+  -- Using Lazy
+  {
+    "navarasu/onedark.nvim",
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require('onedark').setup {
+        style = 'darker'
+      }
+      require('onedark').load()
+    end
   },
   {
     "folke/lazydev.nvim",
@@ -52,7 +63,7 @@ return {
   {
     "stevearc/oil.nvim",
     opts = {},
-    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    dependencies = { { "nvim-mini/mini.icons", opts = {} } },
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
     lazy = false,
   },
@@ -164,20 +175,20 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
   },
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    after = "nvim-treesitter",
-    requires = "nvim-treesitter/nvim-treesitter",
-  },
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    after = "nvim-treesitter",
-    requires = "nvim-treesitter/nvim-treesitter",
-  },
-  {
-    "nvim-treesitter/nvim-treesitter-refactor",
-    after = "nvim-treesitter",
-    requires = "nvim-treesitter/nvim-treesitter",
-  },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-textobjects",
+  --   after = "nvim-treesitter",
+  --   requires = "nvim-treesitter/nvim-treesitter",
+  -- },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-context",
+  --   after = "nvim-treesitter",
+  --   requires = "nvim-treesitter/nvim-treesitter",
+  -- },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-refactor",
+  --   after = "nvim-treesitter",
+  --   requires = "nvim-treesitter/nvim-treesitter",
+  -- },
 
 }

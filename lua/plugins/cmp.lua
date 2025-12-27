@@ -1,9 +1,8 @@
 vim.diagnostic.config({
   -- disable virtual text
   virtual_text = false,
-  virtual_lines = {
-    current_line = true
-  },
+  virtual_lines = false,
+  float = { border = "rounded" },
   -- -- show signs
   signs = {
     text = {
@@ -29,22 +28,22 @@ local function nnoremap(keys, func, desc)
 end
 nnoremap(
   "<c-K>",
-  "<cmd>lua vim.diagnostic.jump({count=-1})<CR>",
+  "<cmd>lua vim.diagnostic.jump({count=-1,float=true})<CR>",
   "Go to previous diagnostic message"
 )
 nnoremap(
   "<c-J>",
-  "<cmd>lua vim.diagnostic.jump({count=1})<CR>",
+  "<cmd>lua vim.diagnostic.jump({count=1,float=true})<CR>",
   "Go to previous diagnostic message"
 )
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0
-    and vim.api
-        .nvim_buf_get_lines(0, line - 1, line, true)[1]
-        :sub(col, col)
-        :match("%s")
+      and vim.api
+      .nvim_buf_get_lines(0, line - 1, line, true)[1]
+      :sub(col, col)
+      :match("%s")
       == nil
 end
 
@@ -142,7 +141,7 @@ cmp.setup({
 
   sources = cmp.config.sources({
     -- { name = 'fittencode', group_index = 1 },
-    { name = "lazydev", group_index = 0 },
+    { name = "lazydev",   group_index = 0 },
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "luasnip" },

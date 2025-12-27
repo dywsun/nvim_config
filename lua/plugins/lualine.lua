@@ -126,17 +126,64 @@ return {
           },
           lualine_b = {
             {
-              'filetype',
-              colored = true,
-              icon_only = true,
-            },
-            {
-              'filename',
+              function()
+                return ' ' .. vim.fn.getcwd():match('[^/]+$')
+              end,
               color = {
-                fg = colors.bg,
-                bg = colors.magenta,
+                fg = colors.magenta,
+                bg = colors.bg,
                 gui = 'bold'
               },
+            },
+            -- {
+            --   -- 'filetype',
+            --   -- colored = true,
+            --   function()
+            --   end,
+            --   icon_only = true,
+            --   color = {
+            --     fg = colors.blue,
+            --     bg = colors.bg,
+            --     gui = 'bold,italic'
+            --   }
+            -- },
+            {
+              -- 'filename',
+              function()
+                return vim.fn.expand('%:t')
+              end,
+              icon = {
+                require('mini.icons').get('file', vim.fn.expand('%:t')),
+                color = {
+                  fg = colors.blue,
+                  bg = colors.bg,
+                  gui = 'bold'
+                }
+              },
+              color = {
+                fg = '#F5D040',
+                bg = colors.bg,
+                gui = 'bold'
+              },
+            },
+            {
+              -- Lsp server name .
+              function()
+                local msg = 'No Lsp'
+                -- local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+                -- local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+                local clients = vim.lsp.get_clients({ bufnr = 0 })
+                if next(clients) == nil then
+                  return msg
+                end
+                local client_name = clients[1].name
+                if client_name == 'typescript-tools' then
+                  client_name = 'ts_ls'
+                end
+                return client_name
+              end,
+              color = { fg = '#D47655', bg = colors.bg, gui = 'bold' },
+              -- separator = { left = '', right = '' }, --
             },
             {
               'branch',
@@ -148,8 +195,10 @@ return {
               },
               -- separator = { right = '' },
               color = {
-                fg = colors.bg,
-                bg = '#98c379',
+                -- fg = colors.bg,
+                -- bg = '#98c379',
+                fg = colors.blue, --'#C6EDEC',
+                bg = colors.bg,
                 gui = 'italic,bold'
               }
             },
@@ -176,31 +225,12 @@ return {
               always_visible = false
             },
             {
-              -- Lsp server name .
-              function()
-                local msg = 'No Lsp'
-                -- local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-                -- local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
-                local clients = vim.lsp.get_clients({ bufnr = 0 })
-                if next(clients) == nil then
-                  return msg
-                end
-                local client_name = clients[1].name
-                if client_name == 'typescript-tools' then
-                  client_name = 'ts_ls'
-                end
-                return client_name
-              end,
-              color = { fg = colors.bg, bg = colors.blue, gui = 'bold' },
-              -- separator = { left = '', right = '' }, --
-            },
-            {
               'fileformat',
               fmt = string.upper,
               icons_enabled = true,
               color = {
-                fg = colors.bg,
-                bg = colors.yellow,
+                fg = colors.green,
+                bg = colors.bg,
                 gui = 'bold'
               },
               symbols = {
@@ -215,8 +245,8 @@ return {
               fmt = string.upper, -- I'm not sure why it's upper case either ;)
               cond = conditions.hide_in_width,
               color = {
-                fg = colors.bg,
-                bg = colors.green,
+                fg = '#CFD468',
+                bg = colors.bg,
                 gui = 'bold'
               },
             },
