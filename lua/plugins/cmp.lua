@@ -2,7 +2,10 @@ vim.diagnostic.config({
   -- disable virtual text
   virtual_text = false,
   virtual_lines = false,
-  float = { border = "rounded" },
+  float = {
+    source = true,
+    border = "rounded"
+  },
   -- -- show signs
   signs = {
     text = {
@@ -219,41 +222,32 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-    if client:supports_method("textDocument/implementation") then
-      nmap(
-        "gi",
-        "<cmd>lua vim.lsp.buf.implementation()<CR>",
-        "[G]oto [I]mplementation"
-      )
-    end
-    nmap("gd", "<cmd>lua vim.lsp.buf.definition()<CR>", "[G]oto [D]efinition")
     nmap(
-      "gi",
-      "<cmd>lua vim.lsp.buf.implementation()<CR>",
-      "[G]oto [I]mplementation"
-    )
-    nmap(
-      "gr",
+      "grr",
       '<cmd>lua require("telescope.builtin").lsp_references()<CR>',
       "[G]oto [R]eferences"
     )
-    nmap("<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", "[R]e[n]ame")
     nmap(
-      "<leader>ca",
-      "<cmd>lua vim.lsp.buf.code_action()<CR>",
-      "[C]ode [A]ction"
+      "gri",
+      '<cmd>lua require("telescope.builtin").lsp_implementations()<CR>',
+      "[G]oto [R]eferences"
     )
-    nmap("K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
     nmap(
-      "<leader>ds",
+      "grt",
+      '<cmd>lua require("telescope.builtin").lsp_type_definition()<CR>',
+      "[G]oto [R]eferences"
+    )
+    nmap(
+      "go",
       '<cmd>lua require("telescope.builtin").lsp_document_symbols()<CR>',
-      "[D]ocument [S]ymbols"
+      "[G]oto [R]eferences"
     )
     nmap(
-      "<leader>ws",
+      "grs",
       '<cmd>lua require("telescope.builtin").lsp_dynamic_workspace_symbols()<CR>',
       "[W]orkspace [S]ymbols"
     )
+    nmap("K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
 
     -- if client:supports_method('textDocument/completion') then
     --   -- Optional: trigger autocompletion on EVERY keypress. May be slow!

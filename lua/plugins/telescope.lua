@@ -1,6 +1,6 @@
 return {
   'nvim-telescope/telescope.nvim',
-  tag = '0.1.8',
+  tag = 'v0.2.1',
   dependencies = {
     'nvim-lua/plenary.nvim',
     {
@@ -125,6 +125,8 @@ return {
             '--glob', '!**/node_modules/*',
             '--glob', '!**/temp/*',
             '--glob', '!**/library/*',
+            '--glob', '!**/@types/*',
+            '--glob', '!**/build/*',
           },
           theme = "dropdown",
           mappings = {

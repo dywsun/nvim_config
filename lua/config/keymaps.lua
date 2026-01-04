@@ -138,25 +138,12 @@ nnoremap(
   "<leader>ss",
   '<cmd>lua require("plugins.mytelescope").search_string()<CR>'
 )
-nnoremap(
-  "<leader>sc",
-  '<cmd>lua require("plugins.mytelescope").change_cwd()<CR>'
-)
 nnoremap("<leader>sf", "<Cmd>TSToolsRemoveUnusedImports<CR>")
 nnoremap("<leader>sm", "<Cmd>TSToolsRemoveUnused<CR>")
 
-nnoremap(
-  "<leader>cp",
-  '<Cmd>lua require("wintersun.plugins.cocosframe").copy_popup()<CR>'
-)
-nnoremap(
-  "<leader>ck",
-  '<Cmd>lua require("wintersun.plugins.cocosframe").remove_popup()<CR>'
-)
-
 -- toggle terminal
-nnoremap("<leader>sfl", "<cmd>ToggleTerm direction=vertical<CR>")
-nnoremap("<leader>sfj", "<cmd>ToggleTerm direction=horizontal<CR>")
+-- nnoremap("<leader>sfl", "<cmd>ToggleTerm direction=vertical<CR>")
+-- nnoremap("<leader>sfj", "<cmd>ToggleTerm direction=horizontal<CR>")
 
 -- toggle markdown preview
 nnoremap("<leader>mt", "<cmd>RenderMarkdown toggle<CR>")
