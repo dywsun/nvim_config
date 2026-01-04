@@ -150,8 +150,15 @@ return {
             {
               -- 'filename',
               function()
-                return vim.fn.expand('%:t')
+                local modified_marker = vim.bo.modified and '[+]' or ''
+                local filename = vim.fn.expand('%:t')
+                if filename == '' then
+                  return '[No Name]'
+                else
+                  return modified_marker .. filename
+                end
               end,
+
               icon = {
                 require('mini.icons').get('file', vim.fn.expand('%:t')),
                 color = {
