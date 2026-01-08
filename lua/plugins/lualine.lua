@@ -97,12 +97,11 @@ return {
           --   normal = { c = { fg = colors.fg, bg = colors.bg } },
           --   inactive = { c = { fg = colors.fg, bg = colors.bg } },
           -- },
-          disabled_filetypes = { "alpha", "dashboard", "NvimTree", "Outline" },
-          ignore_focus = { "alpha", "dashboard", "NvimTree", "Outline" },
+          disabled_filetypes = { "alpha", "dashboard", "Telescope", "Outline" },
+          ignore_focus = { "alpha", "dashboard", "Telescope", "Outline" },
           globalstatus = true,
           icons_enabled = true,
-          --theme = 'gruvbox-material'
-          theme = 'tokyonight'
+          theme = 'auto'
         },
         sections = {
           -- these are to remove the defaults
@@ -127,7 +126,8 @@ return {
           lualine_b = {
             {
               function()
-                return ' ' .. vim.fn.getcwd():match('[^/]+$')
+                local sep = package.config:sub(1, 1)
+                return ' ' .. vim.fn.getcwd():match('[^' .. sep .. ']+$')
               end,
               color = {
                 fg = colors.magenta,
@@ -148,19 +148,10 @@ return {
             --   }
             -- },
             {
-              -- 'filename',
-              function()
-                local modified_marker = vim.bo.modified and '[+]' or ''
-                local filename = vim.fn.expand('%:t')
-                if filename == '' then
-                  return '[No Name]'
-                else
-                  return modified_marker .. filename
-                end
-              end,
-
+              'filename',
               icon = {
                 require('mini.icons').get('file', vim.fn.expand('%:t')),
+                align = 'left',
                 color = {
                   fg = colors.blue,
                   bg = colors.bg,
@@ -174,24 +165,41 @@ return {
               },
             },
             {
-              -- Lsp server name .
-              function()
-                local msg = 'No Lsp'
-                -- local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-                -- local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
-                local clients = vim.lsp.get_clients({ bufnr = 0 })
-                if next(clients) == nil then
-                  return msg
-                end
-                local client_name = clients[1].name
-                if client_name == 'typescript-tools' then
-                  client_name = 'ts_ls'
-                end
-                return client_name
-              end,
+              'lsp_status',
+              icon = '', -- f013
+              symbols = {
+                -- Standard unicode symbols to cycle through for LSP progress:
+                spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+                -- Standard unicode symbol for when LSP is done:
+                done = '✓',
+                -- Delimiter inserted between LSP names:
+                separator = '',
+              },
+              -- List of LSP names to ignore (e.g., `null-ls`):
+              ignore_lsp = {},
+              -- Display the LSP name
+              show_name = true,
               color = { fg = '#D47655', bg = colors.bg, gui = 'bold' },
-              -- separator = { left = '', right = '' }, --
             },
+            -- {
+            --   -- Lsp server name .
+            --   function()
+            --     local msg = 'No Lsp'
+            --     -- local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+            --     -- local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+            --     local clients = vim.lsp.get_clients({ bufnr = 0 })
+            --     if next(clients) == nil then
+            --       return msg
+            --     end
+            --     local client_name = clients[1].name
+            --     if client_name == 'typescript-tools' then
+            --       client_name = 'ts_ls'
+            --     end
+            --     return client_name
+            --   end,
+            --   color = { fg = '#D47655', bg = colors.bg, gui = 'bold' },
+            --   -- separator = { left = '', right = '' }, --
+            -- },
             {
               'branch',
               icon = {
@@ -292,7 +300,6 @@ return {
         },
       }
 
-      -- Now don't forget to initialize lualine
       require('lualine').setup(config)
     end
   }

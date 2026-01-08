@@ -5,8 +5,7 @@ return {
   {
     "folke/tokyonight.nvim",
     lazy = false,
-    priority = 1000,
-    -- config = function() vim.cmd [[colorscheme gruvbox-material]] end,
+    priority = 999,
   },
   {
     "catppuccin/nvim",
@@ -37,7 +36,7 @@ return {
           -- Automatically install LSPs to stdpath for neovim
           { "williamboman/mason.nvim" },
           "williamboman/mason-lspconfig.nvim",
-          { "j-hui/fidget.nvim",      tag = "legacy", opts = {} },
+          { "j-hui/fidget.nvim", version = "*", opts = {} },
         },
       },
       -- Snippet Engine & its associated nvim-cmp source
@@ -129,7 +128,11 @@ return {
 
   {
     "luozhiya/fittencode.nvim",
-    opts = {},
+    opts = {
+      disable_specific_inline_completion = {
+        suffixes = { 'TelescopePrompt', 'neo-tree-popup' },
+      },
+    },
   },
   {
     "folke/which-key.nvim",

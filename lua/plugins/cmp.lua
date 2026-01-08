@@ -225,27 +225,27 @@ vim.api.nvim_create_autocmd("LspAttach", {
     nmap(
       "grr",
       '<cmd>lua require("telescope.builtin").lsp_references()<CR>',
-      "[G]oto [R]eferences"
+      "goto references"
+    )
+    nmap(
+      "gd",
+      '<cmd>lua require("telescope.builtin").lsp_definitions()<CR>',
+      "goto definitions"
     )
     nmap(
       "gri",
       '<cmd>lua require("telescope.builtin").lsp_implementations()<CR>',
-      "[G]oto [R]eferences"
-    )
-    nmap(
-      "grt",
-      '<cmd>lua require("telescope.builtin").lsp_type_definition()<CR>',
-      "[G]oto [R]eferences"
-    )
-    nmap(
-      "go",
-      '<cmd>lua require("telescope.builtin").lsp_document_symbols()<CR>',
-      "[G]oto [R]eferences"
+      "goto type definitions"
     )
     nmap(
       "grs",
+      '<cmd>lua require("telescope.builtin").lsp_document_symbols()<CR>',
+      "goto document symbols"
+    )
+    nmap(
+      "grd",
       '<cmd>lua require("telescope.builtin").lsp_dynamic_workspace_symbols()<CR>',
-      "[W]orkspace [S]ymbols"
+      "goto dynamic workspace symbols"
     )
     nmap("K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
 
