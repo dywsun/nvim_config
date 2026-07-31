@@ -1,6 +1,6 @@
 return {
   {
-    'nvim-lualine/lualine.nvim',
+    "nvim-lualine/lualine.nvim",
     config = function()
       -- Color table for highlights
       -- stylua: ignore
@@ -22,14 +22,12 @@ return {
 
       local conditions = {
         buffer_not_empty = function()
-          return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
+          return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
         end,
-        hide_in_width = function()
-          return vim.fn.winwidth(0) > 80
-        end,
+        hide_in_width = function() return vim.fn.winwidth(0) > 80 end,
         check_git_workspace = function()
-          local filepath = vim.fn.expand('%:p:h')
-          local gitdir = vim.fn.finddir('.git', filepath .. ';')
+          local filepath = vim.fn.expand("%:p:h")
+          local gitdir = vim.fn.finddir(".git", filepath .. ";")
           return gitdir and #gitdir > 0 and #gitdir < #filepath
         end,
       }
@@ -87,8 +85,8 @@ return {
       local config = {
         options = {
           -- Disable sections and component separators
-          component_separators = { left = '', right = '' },
-          section_separators = '',
+          component_separators = { left = "", right = "" },
+          section_separators = "",
           -- theme = 'auto',
           -- theme = {
           --   -- We are going to use lualine_c an lualine_x as left and
@@ -101,38 +99,38 @@ return {
           ignore_focus = { "alpha", "dashboard", "Telescope", "Outline" },
           globalstatus = true,
           icons_enabled = true,
-          theme = 'auto'
+          theme = "auto",
         },
         sections = {
           -- these are to remove the defaults
           lualine_a = {
             {
-              'mode',
+              "mode",
               icon = {
-                '',
-                align = 'left',
+                "",
+                align = "left",
                 color = {
                   fg = colors.green,
-                  gui = 'bold',
-                }
+                  gui = "bold",
+                },
               },
-              separator = { left = '', right = '' },
+              separator = { left = "", right = "" },
               fmt = string.upper,
               color = {
-                gui = 'bold',
-              }
+                gui = "bold",
+              },
             },
           },
           lualine_b = {
             {
               function()
                 local sep = package.config:sub(1, 1)
-                return ' ' .. vim.fn.getcwd():match('[^' .. sep .. ']+$')
+                return " " .. vim.fn.getcwd():match("[^" .. sep .. "]+$")
               end,
               color = {
                 fg = colors.magenta,
                 bg = colors.bg,
-                gui = 'bold'
+                gui = "bold",
               },
             },
             -- {
@@ -148,38 +146,49 @@ return {
             --   }
             -- },
             {
-              'filename',
+              "filename",
               icon = {
-                require('mini.icons').get('file', vim.fn.expand('%:t')),
-                align = 'left',
+                require("mini.icons").get("file", vim.fn.expand("%:t")),
+                align = "left",
                 color = {
                   fg = colors.blue,
                   bg = colors.bg,
-                  gui = 'bold'
-                }
+                  gui = "bold",
+                },
               },
               color = {
-                fg = '#F5D040',
+                fg = "#F5D040",
                 bg = colors.bg,
-                gui = 'bold'
+                gui = "bold",
               },
             },
             {
-              'lsp_status',
-              icon = '', -- f013
+              "lsp_status",
+              icon = "", -- f013
               symbols = {
                 -- Standard unicode symbols to cycle through for LSP progress:
-                spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+                spinner = {
+                  "⠋",
+                  "⠙",
+                  "⠹",
+                  "⠸",
+                  "⠼",
+                  "⠴",
+                  "⠦",
+                  "⠧",
+                  "⠇",
+                  "⠏",
+                },
                 -- Standard unicode symbol for when LSP is done:
-                done = '✓',
+                done = "✓",
                 -- Delimiter inserted between LSP names:
-                separator = '',
+                separator = "",
               },
               -- List of LSP names to ignore (e.g., `null-ls`):
               ignore_lsp = {},
               -- Display the LSP name
-              show_name = true,
-              color = { fg = '#D47655', bg = colors.bg, gui = 'bold' },
+              show_name = false,
+              color = { fg = "#D47655", bg = colors.bg, gui = "bold" },
             },
             -- {
             --   -- Lsp server name .
@@ -201,12 +210,12 @@ return {
             --   -- separator = { left = '', right = '' }, --
             -- },
             {
-              'branch',
+              "branch",
               icon = {
-                '',
+                "",
                 color = {
-                  gui = 'bold'
-                }
+                  gui = "bold",
+                },
               },
               -- separator = { right = '' },
               color = {
@@ -214,55 +223,55 @@ return {
                 -- bg = '#98c379',
                 fg = colors.blue, --'#C6EDEC',
                 bg = colors.bg,
-                gui = 'italic,bold'
-              }
+                gui = "italic,bold",
+              },
             },
             {
-              'diff',
+              "diff",
               colored = true,
               diff_color = {
                 added = { fg = colors.green },
                 modified = { fg = colors.orange },
                 removed = { fg = colors.red },
               },
-              symbols = { added = ' ', modified = ' ', removed = ' ' },
+              symbols = { added = " ", modified = " ", removed = " " },
             },
             {
-              'diagnostics',
-              sources = { 'nvim_diagnostic' },
-              symbols = { error = ' ', warn = ' ', info = ' ' },
+              "diagnostics",
+              sources = { "nvim_diagnostic" },
+              symbols = { error = " ", warn = " ", info = " " },
               diagnostics_color = {
                 color_error = { fg = colors.red },
                 color_warn = { fg = colors.yellow },
                 color_info = { fg = colors.cyan },
               },
               colored = true,
-              always_visible = false
+              always_visible = false,
             },
             {
-              'fileformat',
+              "fileformat",
               fmt = string.upper,
               icons_enabled = true,
               color = {
                 fg = colors.green,
                 bg = colors.bg,
-                gui = 'bold'
+                gui = "bold",
               },
               symbols = {
-                unix = ' LF',
-                dos = ' CRLF',
-                mac = ' CR',
+                unix = " LF",
+                dos = " CRLF",
+                mac = " CR",
               },
               -- separator = { left = '', right = '' }, --
             },
             {
-              'o:encoding',       -- option component same as &encoding in viml
+              "o:encoding", -- option component same as &encoding in viml
               fmt = string.upper, -- I'm not sure why it's upper case either ;)
               cond = conditions.hide_in_width,
               color = {
-                fg = '#CFD468',
+                fg = "#CFD468",
                 bg = colors.bg,
-                gui = 'bold'
+                gui = "bold",
               },
             },
           },
@@ -271,28 +280,28 @@ return {
           lualine_c = {},
           lualine_x = {
             {
-              'filesize',
+              "filesize",
               color = {
                 fg = colors.violet,
                 -- bg = colors.green
-                gui = 'bold'
+                gui = "bold",
               },
               cond = conditions.buffer_not_empty,
             },
             {
-              'location',
+              "location",
               color = {
                 fg = colors.bg,
                 bg = colors.blue,
-                gui = 'bold'
+                gui = "bold",
               },
             },
             {
-              'progress',
+              "progress",
               color = {
                 fg = colors.bg,
                 bg = colors.yellow,
-                gui = 'bold',
+                gui = "bold",
               },
               cond = conditions.hide_in_width,
             },
@@ -300,7 +309,7 @@ return {
         },
       }
 
-      require('lualine').setup(config)
-    end
-  }
+      require("lualine").setup(config)
+    end,
+  },
 }

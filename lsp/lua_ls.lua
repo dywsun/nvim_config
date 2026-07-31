@@ -82,7 +82,7 @@ return {
   },
   settings = {
     Lua = {
-      -- runtime = { version = "Lua5.4" },
+      runtime = { version = "Lua 5.4" },
       diagnostics = {
         globals = { "vim" },
       },
@@ -90,6 +90,8 @@ return {
         library = {
           "${3rd}/luv/library",
           "${3rd}/love2d/library",
+          "/home/wintersun/workspace/project/skynet_room_server/3rd/skynet/lualib",
+          "/home/wintersun/workspace/project/skynet_room_server/3rd/skynet/service",
         },
       },
       -- workspace = { checkThirdParty = false },

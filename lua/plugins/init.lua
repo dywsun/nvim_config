@@ -1,7 +1,31 @@
+local treesitter_win = {
+  "lua",
+  "typescript",
+  "javascript",
+  "json",
+  "html",
+  "csv",
+  "vimdoc",
+}
+
+local treesitter_linux = {
+  "lua",
+  "typescript",
+  "javascript",
+  "json",
+  "html",
+  "csv",
+  "bash",
+  "cmake",
+  "c",
+  "cpp",
+  "vim",
+  "vimdoc",
+}
+
 return {
   { "nvim-lua/plenary.nvim" },
-  -- add gruvbox
-  { "sainnhe/gruvbox-material" },
+  -- colorscheme
   {
     "folke/tokyonight.nvim",
     lazy = false,
@@ -11,9 +35,12 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
-    config = function() vim.cmd [[colorscheme catppuccin-frappe]] end,
   },
-  -- Using Lazy
+  {
+    "sainnhe/gruvbox-material",
+    config = function() vim.cmd [[colorscheme gruvbox-material]] end,
+  },
+
   {
     "folke/lazydev.nvim",
     ft = "lua", -- only load on lua files
@@ -29,16 +56,10 @@ return {
     -- Autocompletion
     "hrsh7th/nvim-cmp",
     dependencies = {
-      {
-        -- LSP Configuration & Plugins
-        "neovim/nvim-lspconfig",
-        dependencies = {
-          -- Automatically install LSPs to stdpath for neovim
-          { "williamboman/mason.nvim" },
-          "williamboman/mason-lspconfig.nvim",
-          { "j-hui/fidget.nvim", version = "*", opts = {} },
-        },
-      },
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
+
       -- Snippet Engine & its associated nvim-cmp source
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
@@ -49,17 +70,25 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
 
       -- Adds a number of user-friendly snippets
       "rafamadriz/friendly-snippets",
       "onsails/lspkind.nvim",
     },
   },
+
+  -- typescript lsp
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
+
   {
     "stevearc/oil.nvim",
     opts = {},
-    dependencies = { { "nvim-mini/mini.icons", opts = {} } },
-    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
     lazy = false,
   },
   {
@@ -69,21 +98,9 @@ return {
     build = ":TSUpdate",
     config = function()
       require "nvim-treesitter.configs".setup {
-        ensure_installed = {
-          "c",
-          "cpp",
-          "lua",
-          "cmake",
-          "csv",
-          "awk",
-          "bash",
-          "vim",
-          "vimdoc",
-          "json",
-          "typescript",
-          "javascript",
-          "html",
-        },
+        ensure_installed = require("utils").os_name() == "Windows"
+            and treesitter_win
+          or treesitter_linux,
         auto_install = true,
         sync_install = true,
         ignore_install = {},
@@ -96,19 +113,34 @@ return {
       }
     end,
   },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
+  },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-refactor",
+  --   after = "nvim-treesitter",
+  --   requires = "nvim-treesitter/nvim-treesitter",
+  -- },
+  -- {
+  --   "ray-x/lsp_signature.nvim",
+  --   event = "InsertEnter",
+  --   opts = {
+  --     -- cfg options
+  --   },
+  -- },
   require "plugins.telescope",
   require "plugins.lualine",
-  -- typescript tools
-  {
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {},
-  },
-
   -- comment
   {
     "numToStr/Comment.nvim",
-    config = function() require "Comment".setup() end,
+    config = function() require("Comment").setup() end,
   },
 
   -- align text
@@ -128,11 +160,7 @@ return {
 
   {
     "luozhiya/fittencode.nvim",
-    opts = {
-      disable_specific_inline_completion = {
-        suffixes = { 'TelescopePrompt', 'neo-tree-popup' },
-      },
-    },
+    opts = {},
   },
   {
     "folke/which-key.nvim",
@@ -163,31 +191,14 @@ return {
     },
   },
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" },
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {},
-  },
-  {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
   },
-  -- {
-  --   "nvim-treesitter/nvim-treesitter-textobjects",
-  --   after = "nvim-treesitter",
-  --   requires = "nvim-treesitter/nvim-treesitter",
-  -- },
-  -- {
-  --   "nvim-treesitter/nvim-treesitter-context",
-  --   after = "nvim-treesitter",
-  --   requires = "nvim-treesitter/nvim-treesitter",
-  -- },
-  -- {
-  --   "nvim-treesitter/nvim-treesitter-refactor",
-  --   after = "nvim-treesitter",
-  --   requires = "nvim-treesitter/nvim-treesitter",
-  -- },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" },
+    opts = {},
+  },
 
 }

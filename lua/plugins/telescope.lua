@@ -1,22 +1,22 @@
 return {
-  'nvim-telescope/telescope.nvim',
-  tag = 'v0.2.1',
+  "nvim-telescope/telescope.nvim",
+  version = "*",
   dependencies = {
-    'nvim-lua/plenary.nvim',
+    "nvim-lua/plenary.nvim",
     {
-      'nvim-telescope/telescope-fzf-native.nvim',
-      build = 'make',
-      cond = function()
-        return vim.fn.executable 'make' == 1
-      end
-    }
+      "nvim-telescope/telescope-fzf-native.nvim",
+      build = "make",
+      cond = function() return vim.fn.executable "make" == 1 end,
+    },
+    { "nvim-telescope/telescope-ui-select.nvim" },
   },
   config = function()
     local telescope = require("telescope")
     local telescope_config = require("telescope.config")
 
     -- Clone the default Telescope configuration
-    local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
+    local vimgrep_arguments =
+      { unpack(telescope_config.values.vimgrep_arguments) }
 
     -- I want to search in hidden/dot files.
     -- table.insert(vimgrep_arguments, "--hidden")
@@ -40,11 +40,13 @@ return {
             previewers.buffer_previewer_maker(filepath, bufnr, opts)
           else
             -- maybe we want to write something to the buffer here
-            vim.schedule(function()
-              vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "BINARY" })
-            end)
+            vim.schedule(
+              function()
+                vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "BINARY" })
+              end
+            )
           end
-        end
+        end,
       }):sync()
     end
     telescope.setup {
@@ -76,7 +78,7 @@ return {
         winblend = 0,
         border = {},
         borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-        results_title = '',
+        results_title = "",
         mappings = {
           -- i: insert, n: normal
           i = {
@@ -84,21 +86,21 @@ return {
             -- actions.which_key shows the mappings for your picker,
             -- e.g. git_{create, delete, ...}_branch for the git_branches picker
             -- ['<C-/>'] = 'which_key',
-            ['<C-d>'] = false,
-            ['<C-x>'] = false,
-            ['<C-v>'] = false,
-            ['<C-u>'] = false,
-            ['<C-J>'] = 'move_selection_next',
-            ['<C-k>'] = 'move_selection_previous',
-            ['<C-n>'] = 'preview_scrolling_down',
-            ['<C-p>'] = 'preview_scrolling_up',
-            ['<C-l>'] = 'select_vertical',
-            ['<C-h>'] = 'select_horizontal',
-          }
+            ["<C-d>"] = false,
+            ["<C-x>"] = false,
+            ["<C-v>"] = false,
+            ["<C-u>"] = false,
+            ["<C-J>"] = "move_selection_next",
+            ["<C-k>"] = "move_selection_previous",
+            ["<C-n>"] = "preview_scrolling_down",
+            ["<C-p>"] = "preview_scrolling_up",
+            ["<C-l>"] = "select_vertical",
+            ["<C-h>"] = "select_horizontal",
+          },
         },
         preview = {
-          filesize_limit = 1 -- MB
-        }
+          filesize_limit = 0.1, -- MB
+        },
       },
       pickers = {
         -- Default configuration for builtin pickers goes here:
@@ -112,38 +114,51 @@ return {
           no_ignore = true,
           hidden = true,
           find_command = {
-            'rg', '--files', '--hidden',
-            '--glob', '!**/.git/*',
-            '--glob', '!*.pac',
-            '--glob', '!*.atlas',
-            '--glob', '!*.png',
-            '--glob', '!*.mp3',
-            '--glob', '!*.prefab',
-            '--glob', '!*.scene',
-            '--glob', '!*.xlsx',
-            '--glob', '!*.meta',
-            '--glob', '!**/node_modules/*',
-            '--glob', '!**/temp/*',
-            '--glob', '!**/library/*',
-            '--glob', '!**/@types/*',
-            '--glob', '!**/build/*',
+            "rg",
+            "--files",
+            "--hidden",
+            "--glob",
+            "!**/.git/*",
+            "--glob",
+            "!*.pac",
+            "--glob",
+            "!*.atlas",
+            "--glob",
+            "!*.png",
+            "--glob",
+            "!*.mp3",
+            "--glob",
+            "!*.prefab",
+            "--glob",
+            "!*.scene",
+            "--glob",
+            "!*.xlsx",
+            "--glob",
+            "!*.meta",
+            "--glob",
+            "!**/node_modules/*",
+            "--glob",
+            "!**/temp/*",
+            "--glob",
+            "!**/library/*",
           },
           theme = "dropdown",
           mappings = {
             n = {
               ["cd"] = function(prompt_bufnr)
-                local selection = require("telescope.actions.state").get_selected_entry()
+                local selection =
+                  require("telescope.actions.state").get_selected_entry()
                 local dir = vim.fn.fnamemodify(selection.path, ":p:h")
                 require("telescope.actions").close(prompt_bufnr)
                 -- Depending on what you want put `cd`, `lcd`, `tcd`
                 vim.cmd(string.format("silent lcd %s", dir))
-              end
-            }
-          }
+              end,
+            },
+          },
         },
         lsp_references = {
           theme = "dropdown",
-        }
+        },
       },
       extensions = {
         -- Your extension configuration goes here:
@@ -152,15 +167,19 @@ return {
         -- }
         -- please take a look at the readme of the extension you want to configure
         fzf = {
-          fuzzy = true,                   -- false will only do exact matching
+          fuzzy = true, -- false will only do exact matching
           override_generic_sorter = true, -- override the generic sorter
-          override_file_sorter = true,    -- override the file sorter
-          case_mode = 'smart_case',       -- or "ignore_case" or "respect_case"
+          override_file_sorter = true, -- override the file sorter
+          case_mode = "smart_case", -- or "ignore_case" or "respect_case"
           -- the default case_mode is "smart_case"
-        }
-      }
+        },
+        ["ui-select"] = {
+          require("telescope.themes").get_dropdown {},
+        },
+      },
     }
 
-    require('telescope').load_extension('fzf')
-  end
+    require("telescope").load_extension("fzf")
+    require("telescope").load_extension("ui-select")
+  end,
 }

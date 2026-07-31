@@ -2,11 +2,10 @@ vim.diagnostic.config({
   -- disable virtual text
   virtual_text = false,
   virtual_lines = false,
-  float = {
-    source = true,
-    border = "rounded"
-  },
-  -- -- show signs
+  -- virtual_lines = {
+  --   current_line = true
+  -- },
+  -- show signs
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "",
@@ -23,18 +22,22 @@ vim.diagnostic.config({
   },
   update_in_insert = false,
   underline = true,
+  float = {
+    border = "rounded",
+    source = true,
+    prefix = "  ",
+  },
   -- severity_sort = true,
 })
-local function nnoremap(keys, func, desc)
-  local options = { noremap = true, silent = true, desc = desc }
-  vim.api.nvim_set_keymap("n", keys, func, options)
-end
-nnoremap(
+
+local utils = require("utils")
+
+utils.nnoremap(
   "<c-K>",
   "<cmd>lua vim.diagnostic.jump({count=-1,float=true})<CR>",
   "Go to previous diagnostic message"
 )
-nnoremap(
+utils.nnoremap(
   "<c-J>",
   "<cmd>lua vim.diagnostic.jump({count=1,float=true})<CR>",
   "Go to previous diagnostic message"
@@ -43,10 +46,10 @@ nnoremap(
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0
-      and vim.api
-      .nvim_buf_get_lines(0, line - 1, line, true)[1]
-      :sub(col, col)
-      :match("%s")
+    and vim.api
+        .nvim_buf_get_lines(0, line - 1, line, true)[1]
+        :sub(col, col)
+        :match("%s")
       == nil
 end
 
@@ -144,7 +147,7 @@ cmp.setup({
 
   sources = cmp.config.sources({
     -- { name = 'fittencode', group_index = 1 },
-    { name = "lazydev",   group_index = 0 },
+    { name = "lazydev", group_index = 0 },
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "luasnip" },
@@ -152,6 +155,7 @@ cmp.setup({
     { name = "buffer" },
     { name = "path" },
     { name = "spell" },
+    { name = "nvim_lsp_signature_help" },
   }),
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
@@ -190,26 +194,42 @@ require("mason").setup({
   },
 })
 
+local win_servers = {
+  "lua_ls",
+  "jsonls",
+}
+local linux_servers = {
+  "lua_ls",
+  "stylua",
+  "jsonls",
+  "neocmake",
+  "ccls",
+  "bashls",
+  "tombi",
+}
+
+local servers = utils.os_name() == "Windows" and win_servers or linux_servers
+
 require("mason-lspconfig").setup({
-  -- ensure_installed = { "lua_ls", "jsonls", "pyright", "html" },
-  ensure_installed = { "lua_ls" },
+  ensure_installed = servers,
   automatic_enable = false,
 })
 
-local servers = {
-  "stylua",
-  "jsonls",
-  "tombi",
-  "neocmake",
-  "bashls",
-  "lua_ls",
-  -- "ts_ls",
-  "ccls",
-}
+vim.lsp.config("*", {
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
+})
+
 for _, server in ipairs(servers) do
   vim.lsp.enable(server)
 end
+
 require("typescript-tools").setup({
+  settings = {
+    tsserver_file_preferences = {
+      includeInlayParameterNameHints = "all",
+      includeCompletionsForModuleExports = true,
+    },
+  },
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -222,32 +242,62 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-    nmap(
-      "grr",
-      '<cmd>lua require("telescope.builtin").lsp_references()<CR>',
-      "goto references"
-    )
-    nmap(
-      "gd",
-      '<cmd>lua require("telescope.builtin").lsp_definitions()<CR>',
-      "goto definitions"
-    )
-    nmap(
-      "gri",
-      '<cmd>lua require("telescope.builtin").lsp_implementations()<CR>',
-      "goto type definitions"
-    )
-    nmap(
-      "grs",
-      '<cmd>lua require("telescope.builtin").lsp_document_symbols()<CR>',
-      "goto document symbols"
-    )
+
+    if client:supports_method("textDocument/references") then
+      nmap(
+        "grr",
+        '<cmd>lua require("telescope.builtin").lsp_references()<CR>',
+        "goto references"
+      )
+    end
+
+    if client:supports_method("textDocument/definition") then
+      nmap(
+        "gd",
+        '<cmd>lua require("telescope.builtin").lsp_definitions()<CR>',
+        "goto definitions"
+      )
+    end
+
+    if client:supports_method("textDocument/implementation") then
+      nmap(
+        "gri",
+        '<cmd>lua require("telescope.builtin").lsp_implementations()<CR>',
+        "goto type definitions"
+      )
+    end
+
+    if client:supports_method("textDocument/documentHighlight") then
+      nmap("K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
+    end
+
+    if client:supports_method("textDocument/formatting") then
+      vim.keymap.set(
+        "n",
+        "<leader>f",
+        function() vim.lsp.buf.format({ bufnr = args.buf }) end,
+        {
+          noremap = true,
+          silent = true,
+          desc = "LSP: Formatting",
+          buffer = args.buf,
+        }
+      )
+    end
+
+    if client:supports_method("textDocument/documentSymbol") then
+      nmap(
+        "grs",
+        '<cmd>lua require("telescope.builtin").lsp_document_symbols()<CR>',
+        "goto document symbols"
+      )
+    end
+
     nmap(
       "grd",
       '<cmd>lua require("telescope.builtin").lsp_dynamic_workspace_symbols()<CR>',
       "goto dynamic workspace symbols"
     )
-    nmap("K", "<cmd>lua vim.lsp.buf.hover()<CR>", "Hover Documentation")
 
     -- if client:supports_method('textDocument/completion') then
     --   -- Optional: trigger autocompletion on EVERY keypress. May be slow!

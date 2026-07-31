@@ -1,36 +1,8 @@
-local keymap = vim.api.nvim_set_keymap -- Shorten function name
--- Modes
---   normal_mode = 'n',
---   insert_mode = 'i',
---   visual_mode = 'v',
---   visual_block_mode = 'x',
---   term_mode = 't',
---   command_mode = 'c'
-
-local noremap_opts = { noremap = true, silent = true }
-local slient_opts = { silent = true }
-
-local allnoremap = function(lhs, rhs) keymap("", lhs, rhs, noremap_opts) end
-local nnoremap = function(lhs, rhs, silent)
-  if type(rhs) == "function" then
-    vim.keymap.set("n", lhs, rhs)
-  else
-    silent = silent == nil or false
-    noremap_opts.silent = silent
-    keymap("n", lhs, rhs, noremap_opts)
-  end
-end
-local vnoremap = function(lhs, rhs, silent)
-  silent = silent == nil or false
-  noremap_opts.silent = silent
-  keymap("v", lhs, rhs, noremap_opts)
-end
-local xnoremap = function(lhs, rhs, silent)
-  silent = silent == nil or false
-  noremap_opts.silent = silent
-  keymap("x", lhs, rhs, noremap_opts)
-end
-local nmap = function(lhs, rhs) keymap("n", lhs, rhs, slient_opts) end
+local utils = require("utils")
+local allnoremap = utils.allnoremap
+local nnoremap = utils.nnoremap
+local vnoremap = utils.vnoremap
+local xnoremap = utils.xnoremap
 
 --Remap space as leader key
 allnoremap("<Space>", "<Nop>")
@@ -64,11 +36,6 @@ nnoremap("<right>", "<cmd>vertical resize +3<CR>")
 -- line numbers
 -- nnoremap('<leader>n', '<cmd>set nu!<CR>')
 nnoremap("<leader>n", "<cmd>set rnu!<CR>")
-
--- table
--- nnoremap('<leader>tu', '<cmd>tabe<CR>')
--- nnoremap('<leader>tl', '<cmd>+tabnext<CR>')
--- nnoremap('<leader>th', '<cmd>-tabnext<CR>')
 
 -- netrw
 -- nnoremap('<leader>t', '<cmd>Ex<CR>')
@@ -111,12 +78,6 @@ nnoremap(
 -- make excuteable
 nnoremap("<leader>x", "<cmd>!chmod +x %<CR>")
 
--- vnoremap('<leader>b', ':lua require("translate").trans()<CR>')
-
--- winshift
-nmap("<C-h>", ":WinShift<CR>Jq<leader>k")
-nmap("<C-l>", ":WinShift<CR>Lq<leader>h")
-
 -- telescope
 nnoremap("<leader>sj", "<cmd>Telescope find_files<CR>")
 nnoremap("<leader>sk", "<cmd>Telescope treesitter<CR>")
@@ -126,18 +87,14 @@ nnoremap(
   '<cmd>lua require("plugins.mytelescope").nvim_config()<CR>'
 )
 nnoremap(
-  "<leader>sz",
-  '<cmd>lua require("plugins.mytelescope").zsh_config()<CR>'
+  "<leader>sn",
+  '<cmd>lua require("plugins.mytelescope").nvim_data()<CR>'
 )
-nnoremap("<leader>sx", '<cmd>lua require("plugins.mytelescope").xconfig()<CR>')
 nnoremap(
   "<leader>sp",
   '<cmd>lua require("plugins.mytelescope").select_project()<CR>'
 )
-nnoremap(
-  "<leader>ss",
-  '<cmd>lua require("plugins.mytelescope").search_string()<CR>'
-)
+nnoremap("<leader>ss", '<cmd>lua require("telescope.builtin").live_grep()<CR>')
 nnoremap("<leader>sf", "<Cmd>TSToolsRemoveUnusedImports<CR>")
 nnoremap("<leader>sm", "<Cmd>TSToolsRemoveUnused<CR>")
 
