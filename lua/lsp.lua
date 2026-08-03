@@ -196,11 +196,13 @@ require("mason").setup({
 
 local win_servers = {
   "lua_ls",
+  "ts_ls",
   "jsonls",
 }
 local linux_servers = {
   "lua_ls",
   "stylua",
+  "ts_ls",
   "jsonls",
   "neocmake",
   "ccls",
@@ -211,7 +213,10 @@ local linux_servers = {
 local servers = utils.os_name() == "Windows" and win_servers or linux_servers
 
 require("mason-lspconfig").setup({
-  ensure_installed = servers,
+  ensure_installed = vim.tbl_filter(
+    function(item) return item ~= "ccls" end,
+    servers
+  ),
   automatic_enable = false,
 })
 
@@ -220,7 +225,7 @@ vim.lsp.config("*", {
 })
 
 for _, server in ipairs(servers) do
-  vim.lsp.enable(server)
+  if server ~= "ts_ls" then vim.lsp.enable(server) end
 end
 
 require("typescript-tools").setup({
@@ -298,6 +303,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
       '<cmd>lua require("telescope.builtin").lsp_dynamic_workspace_symbols()<CR>',
       "goto dynamic workspace symbols"
     )
+
+    if client.name == "typescript-tools" then
+      nmap("<leader>sf", "<Cmd>TSToolsRemoveUnusedImports<CR>")
+      nmap("<leader>sm", "<Cmd>TSToolsRemoveUnused<CR>")
+    end
 
     -- if client:supports_method('textDocument/completion') then
     --   -- Optional: trigger autocompletion on EVERY keypress. May be slow!

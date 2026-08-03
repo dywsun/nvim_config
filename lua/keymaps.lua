@@ -78,32 +78,12 @@ nnoremap(
 -- make excuteable
 nnoremap("<leader>x", "<cmd>!chmod +x %<CR>")
 
--- telescope
-nnoremap("<leader>sj", "<cmd>Telescope find_files<CR>")
-nnoremap("<leader>sk", "<cmd>Telescope treesitter<CR>")
-nnoremap("<leader>sh", "<cmd>Telescope current_buffer_fuzzy_find<CR>")
-nnoremap(
-  "<leader>sv",
-  '<cmd>lua require("plugins.mytelescope").nvim_config()<CR>'
-)
-nnoremap(
-  "<leader>sn",
-  '<cmd>lua require("plugins.mytelescope").nvim_data()<CR>'
-)
-nnoremap(
-  "<leader>sp",
-  '<cmd>lua require("plugins.mytelescope").select_project()<CR>'
-)
-nnoremap("<leader>ss", '<cmd>lua require("telescope.builtin").live_grep()<CR>')
-nnoremap("<leader>sf", "<Cmd>TSToolsRemoveUnusedImports<CR>")
-nnoremap("<leader>sm", "<Cmd>TSToolsRemoveUnused<CR>")
+-- toggle markdown preview
+nnoremap("<leader>mt", "<cmd>RenderMarkdown toggle<CR>")
 
 -- toggle terminal
 -- nnoremap("<leader>sfl", "<cmd>ToggleTerm direction=vertical<CR>")
 -- nnoremap("<leader>sfj", "<cmd>ToggleTerm direction=horizontal<CR>")
-
--- toggle markdown preview
-nnoremap("<leader>mt", "<cmd>RenderMarkdown toggle<CR>")
 
 -- source my snips config
 -- nnoremap('<leader>ss', '<cmd>source ~/.config/nvim/after/plugin/mysnips.lua<CR>')

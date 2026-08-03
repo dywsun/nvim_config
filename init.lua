@@ -29,7 +29,7 @@ local opts = {
 }
 
 require("lazy").setup(plugins, opts)
-
+require("lsp")
 
 -- highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {

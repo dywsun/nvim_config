@@ -181,5 +181,27 @@ return {
 
     require("telescope").load_extension("fzf")
     require("telescope").load_extension("ui-select")
+
+    -- telescope keymaps
+    local nnoremap = require("utils").nnoremap
+    nnoremap("<leader>sj", "<cmd>Telescope find_files<CR>")
+    nnoremap("<leader>sk", "<cmd>Telescope treesitter<CR>")
+    nnoremap("<leader>sh", "<cmd>Telescope current_buffer_fuzzy_find<CR>")
+    nnoremap(
+      "<leader>sv",
+      '<cmd>lua require("plugins.mytelescope").nvim_config()<CR>'
+    )
+    nnoremap(
+      "<leader>sn",
+      '<cmd>lua require("plugins.mytelescope").nvim_data()<CR>'
+    )
+    nnoremap(
+      "<leader>sp",
+      '<cmd>lua require("plugins.mytelescope").select_project()<CR>'
+    )
+    nnoremap(
+      "<leader>ss",
+      '<cmd>lua require("telescope.builtin").live_grep()<CR>'
+    )
   end,
 }
