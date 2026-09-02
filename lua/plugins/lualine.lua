@@ -147,15 +147,15 @@ return {
             -- },
             {
               "filename",
-              icon = {
-                require("mini.icons").get("file", vim.fn.expand("%:t")),
-                align = "left",
-                color = {
-                  fg = colors.blue,
-                  bg = colors.bg,
-                  gui = "bold",
-                },
-              },
+              -- icon = {
+              --   require("mini.icons").get("file", vim.fn.expand("%:t")),
+              --   align = "left",
+              --   color = {
+              --     fg = colors.blue,
+              --     bg = colors.bg,
+              --     gui = "bold",
+              --   },
+              -- },
               color = {
                 fg = "#F5D040",
                 bg = colors.bg,
@@ -164,7 +164,7 @@ return {
             },
             {
               "lsp_status",
-              icon = "", -- f013
+              icon = "", --"", -- f013
               symbols = {
                 -- Standard unicode symbols to cycle through for LSP progress:
                 spinner = {
@@ -182,12 +182,12 @@ return {
                 -- Standard unicode symbol for when LSP is done:
                 done = "✓",
                 -- Delimiter inserted between LSP names:
-                separator = "",
+                separator = "/",
               },
               -- List of LSP names to ignore (e.g., `null-ls`):
-              ignore_lsp = {},
+              ignore_lsp = {"stylua"},
               -- Display the LSP name
-              show_name = false,
+              show_name = true,
               color = { fg = "#D47655", bg = colors.bg, gui = "bold" },
             },
             -- {
