@@ -41,6 +41,7 @@ return {
     config = function() vim.cmd [[colorscheme gruvbox-material]] end,
   },
 
+  -- autocomplete neovim api (vim.xxx.xxx / vim.api.xxx)
   {
     "folke/lazydev.nvim",
     ft = "lua", -- only load on lua files
@@ -50,6 +51,10 @@ return {
         -- Load luvit types when the `vim.uv` word is found
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       },
+      enabled = function(root_dir)
+        local config = vim.fn.stdpath("config")
+        return vim.startswith(root_dir, config)
+      end,
     },
   },
   {
@@ -93,14 +98,14 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require "nvim-treesitter.configs".setup {
+      require "nvim-treesitter".setup {
         ensure_installed = require("utils").os_name() == "Windows"
             and treesitter_win
-          or treesitter_linux,
+            or treesitter_linux,
         auto_install = true,
         sync_install = true,
         ignore_install = {},

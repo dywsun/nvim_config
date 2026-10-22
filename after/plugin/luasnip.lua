@@ -37,7 +37,6 @@ ls.add_snippets("lua", {
     )
   ),
 })
-
 ls.add_snippets("all", {
   s("ternary", {
     -- equivalent to "${1:cond} ? ${2:then} : ${3:else}"
@@ -60,65 +59,25 @@ ls.add_snippets("all", {
 
 -- for cocos create
 ls.add_snippets("typescript", {
+  s("/*", fmt([[/** {} **/]], { i(1, "comments") })),
   s(
-    "cocos363",
-    fmt(
-      [[
-  import {{ _decorator, Component, Node }} from 'cc';
-  const {{ ccclass, property }} = _decorator;
-
-  @ccclass('{}')
-  export class {} extends Component {{
-    protected onLoad(): void {{
-    }}
-
-    protected onDestroy(): void {{
-
-    }}
-  }}{}
-  ]],
-      {
-        i(1, "NewCompenent"),
-        rep(1),
-        i(0),
-      }
-    )
-  ),
-
-  s(
-    "pnode",
-    fmt(
-      [[
-    @property(Node)
-    {}: Node = null
-    {}
-  ]],
-      { i(1, "testNode"), i(0) }
-    )
+    "icc", -- import cc
+    {
+      t("import * as cc from 'cc'")
+    }
   ),
   s(
-    "pnodes",
-    fmt(
-      [[
-    @property(Node)
-    {}: Node[] = []
-    {}
-  ]],
-      { i(1, "testNodes"), i(0) }
-    )
+    "twidth",
+    {
+      t([[getComponent(UITransform).width]]),
+    }
   ),
   s(
-    "plabel",
-    fmt(
-      [[
-    @property(Label)
-    {}: Label = null
-    {}
-  ]],
-      { i(1, "testLabel"), i(0) }
-    )
+    "theight",
+    {
+      t([[getComponent(UITransform).height]]),
+    }
   ),
 
-  s("width", { t([[getComponent(UITransform).width]]) }),
-  s("height", { t([[getComponent(UITransform).height]]) }),
 })
+

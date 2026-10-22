@@ -90,8 +90,9 @@ return {
         library = {
           "${3rd}/luv/library",
           "${3rd}/love2d/library",
-          "/home/wintersun/workspace/project/skynet_room_server/3rd/skynet/lualib",
-          "/home/wintersun/workspace/project/skynet_room_server/3rd/skynet/service",
+          -- "/home/wintersun/workspace/project/skynet_room_server/3rd/skynet/lualib",
+          -- "/home/wintersun/workspace/project/skynet_room_server/3rd/skynet/service",
+          "/usr/share/lua/5.5/"
         },
       },
       -- workspace = { checkThirdParty = false },
