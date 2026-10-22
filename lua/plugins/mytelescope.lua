@@ -26,7 +26,7 @@ function M.search_string()
   require("telescope.builtin").live_grep({ default_text = search })
 end
 
-function M.select_project()
+function M.select_project(cwd)
   require("telescope.builtin").find_files({
     prompt_title = "Select Project Root Directory",
     find_command = {
@@ -39,7 +39,7 @@ function M.select_project()
       "--exclude",
       ".git",
     },
-    cwd = "D:/workspace/cocos_game/work/3.6.3",
+    cwd = cwd,
     attach_mappings = function(_, map)
       map("i", "<CR>", function(prompt_bufnr)
         local actions = require("telescope.actions")

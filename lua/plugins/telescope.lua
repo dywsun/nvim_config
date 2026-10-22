@@ -197,7 +197,8 @@ return {
     )
     nnoremap(
       "<leader>sp",
-      '<cmd>lua require("plugins.mytelescope").select_project()<CR>'
+      '<cmd>lua require("plugins.mytelescope").select_project("D:/workspace/cocos_game/work/3.6.3")<CR>'
+      -- '<cmd>lua require("plugins.mytelescope").select_project("~/workspace/project")<CR>'
     )
     nnoremap(
       "<leader>ss",
